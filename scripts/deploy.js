@@ -1,8 +1,6 @@
 const hre = require('hardhat');
 
 (async () => {
-    const accounts = await hre.ethers.getSigners();
-
     const contractFactory = await hre.ethers.getContractFactory('MyEpicGame');
     const contract = await contractFactory.deploy(
         ['Foo', 'Bar', 'Baz'],
@@ -14,13 +12,22 @@ const hre = require('hardhat');
         [100, 110, 90],
         [7, 6, 8]
     );
-    console.log('Deployed', contract.address);
+    await contract.deployed();
+    console.log('Contract deployed to:', contract.address);
 
-    await contract.mintCharacterNFT(2);
+    const mint1 = await contract.mintCharacterNFT(0);
+    await mint1.wait();
+    console.log('Minted NFT #1 (Foo)');
 
-    const metadata = await contract.getMetadata(1);
-    console.log("Metadata:", JSON.parse(metadata));
+    const mint2 = await contract.mintCharacterNFT(1);
+    await mint2.wait();
+    console.log('Minted NFT #2 (Bar)');
 
-    const tokenURI = await contract.tokenURI(1);
-    console.log("Token URI:", tokenURI);
+    const mint3 = await contract.mintCharacterNFT(2);
+    await mint3.wait();
+    console.log('Minted NFT #3 (Baz)');
+
+    const mint4 = await contract.mintCharacterNFT(1);
+    await mint4.wait();
+    console.log('Minted NFT #4 (Bar)');
 })();
