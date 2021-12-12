@@ -5,18 +5,24 @@ const { ethers } = require("hardhat");
     const accounts = await ethers.getSigners();
     const contractFactory = await ethers.getContractFactory('MyEpicGame');
     const contract = await contractFactory.deploy(
-        ['Foo', 'Bar', 'Baz'],
+        ['001', '004', '007'],
         [
-            'https://via.placeholder.com/512/FF0000/FFFFFF/?text=FOO',
-            'https://via.placeholder.com/512/00FF00/FFFFFF/?text=BAR',
-            'https://via.placeholder.com/512/0000FF/FFFFFF/?text=BAZ',
+            'Bulbasaur',
+            'Charmander',
+            'Squirtle',
         ],
-        [100, 110, 90],
-        [30, 25, 35],
-        'Boss',
-        'https://via.placeholder.com/512/000000/FFFFFF/?text=BOSS',
+        [
+            'https://i.imgur.com/ReiwDFY.png',
+            'https://i.imgur.com/unWkpHk.png',
+            'https://i.imgur.com/IogWnKI.png',
+        ],
+        [110, 100, 90],
+        [25, 30, 35],
+        '150',
+        'Mewtwo',
+        'https://i.imgur.com/n9qJRzk.png',
         1000,
-        30,
+        45,
     );
     await contract.deployed();
     console.log('Contract deployed to:', contract.address);

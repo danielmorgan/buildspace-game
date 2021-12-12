@@ -15,6 +15,7 @@ contract MyEpicGame is ERC721 {
 
     struct CharacterAttributes {
         uint characterIndex;
+        string dexNumber;
         string name;
         string imageURI;
         uint hp;
@@ -25,6 +26,7 @@ contract MyEpicGame is ERC721 {
     CharacterAttributes[] defaultCharacters;
 
     struct BigBoss {
+        string dexNumber;
         string name;
         string imageURI;
         uint hp;
@@ -34,24 +36,27 @@ contract MyEpicGame is ERC721 {
 
     BigBoss public bigBoss;
 
-    mapping(address => uint256) holders;
-    mapping(uint256 => CharacterAttributes) attributes;
+    mapping(address => uint256) public holders;
+    mapping(uint256 => CharacterAttributes) public attributes;
 
     event CharacterNFTMinted(address sender, uint256 tokenId, uint256 characterIndex);
     event AttackCompleted(uint newBossHp, uint newPlayerHp);
 
     constructor(
+        string[] memory characterDexNumbers,
         string[] memory characterNames,
         string[] memory characterImageURIs,
         uint[] memory characterHp,
         uint[] memory characterAttackDamage,
+        string memory bossDexNumber,
         string memory bossName,
         string memory bossImageURI,
         uint bossHp,
         uint bossAttackDamage
-    ) ERC721("Heroes", "HERO")
+    ) ERC721("Buildspace Pokemon", "PKMN")
     {
         bigBoss = BigBoss({
+            dexNumber: bossDexNumber,
             name: bossName,
             imageURI: bossImageURI,
             hp: bossHp,
@@ -67,6 +72,7 @@ contract MyEpicGame is ERC721 {
         for (uint i = 0; i < characterNames.length; i++) {
             defaultCharacters.push(CharacterAttributes({
                 characterIndex: i,
+                dexNumber: characterDexNumbers[i],
                 name: characterNames[i],
                 imageURI: characterImageURIs[i],
                 hp: characterHp[i],
@@ -106,8 +112,8 @@ contract MyEpicGame is ERC721 {
                     '"description":"Buildspace Create your own mini turn-based NFT browser game project",',
                     '"image":"', _attributes.imageURI, '",',
                     '"attributes":[',
-                        '{"trait_type":"HP","value":', Strings.toString(_attributes.hp), '},',
-                        '{"trait_type":"Max HP","value":', Strings.toString(_attributes.maxHp), '},',
+                        '{"trait_type":"Dex Number","display_type":"number","value":', _attributes.dexNumber, '},',
+                        '{"trait_type":"HP","value":', Strings.toString(_attributes.hp), ',"max_value":', Strings.toString(_attributes.maxHp), '},',
                         '{"trait_type":"Attack DMG","value":', Strings.toString(_attributes.attackDamage), '}',
                     ']',
                 '}'
